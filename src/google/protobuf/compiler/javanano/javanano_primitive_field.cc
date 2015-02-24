@@ -706,8 +706,79 @@ GenerateHashCodeCode(io::Printer* printer) const {
 
 // ===================================================================
 
-RepeatedPrimitiveFieldGenerator::
-RepeatedPrimitiveFieldGenerator(const FieldDescriptor* descriptor, const Params& params)
+PrimitiveOneofFieldGenerator::PrimitiveOneofFieldGenerator(
+    const FieldDescriptor* descriptor, const Params& params)
+  : FieldGenerator(params), descriptor_(descriptor) {
+    SetPrimitiveVariables(descriptor, params, &variables_);
+    SetCommonOneofVariables(descriptor, &variables_);
+}
+
+PrimitiveOneofFieldGenerator::~PrimitiveOneofFieldGenerator() {}
+
+void PrimitiveOneofFieldGenerator::GenerateMembers(
+    io::Printer* printer, bool /*unused lazy_init*/) const {
+  printer->Print(variables_,
+    "public boolean has$capitalized_name$() {\n"
+    "  return $has_oneof_case$;\n"
+    "}\n"
+    "public $type$ get$capitalized_name$() {\n"
+    "  if ($has_oneof_case$) {\n"
+    "    return ($type$) ($boxed_type$) this.$oneof_name$_;\n"
+    "  }\n"
+    "  return $default$;\n"
+    "}\n"
+    "public $message_name$ set$capitalized_name$($type$ value) {\n"
+    "  $set_oneof_case$;\n"
+    "  this.$oneof_name$_ = value;\n"
+    "  return this;\n"
+    "}\n");
+}
+
+void PrimitiveOneofFieldGenerator::GenerateClearCode(
+    io::Printer* printer) const {
+  // No clear method for oneof fields.
+}
+
+void PrimitiveOneofFieldGenerator::GenerateMergingCode(
+    io::Printer* printer) const {
+  printer->Print(variables_,
+    "this.$oneof_name$_ = input.read$capitalized_type$();\n"
+    "$set_oneof_case$;\n");
+}
+
+void PrimitiveOneofFieldGenerator::GenerateSerializationCode(
+    io::Printer* printer) const {
+  printer->Print(variables_,
+    "if ($has_oneof_case$) {\n"
+    "  output.write$capitalized_type$(\n"
+    "      $number$, ($boxed_type$) this.$oneof_name$_);\n"
+    "}\n");
+}
+
+void PrimitiveOneofFieldGenerator::GenerateSerializedSizeCode(
+    io::Printer* printer) const {
+  printer->Print(variables_,
+    "if ($has_oneof_case$) {\n"
+    "  size += com.google.protobuf.nano.CodedOutputByteBufferNano\n"
+    "      .compute$capitalized_type$Size(\n"
+    "          $number$, ($boxed_type$) this.$oneof_name$_);\n"
+    "}\n");
+}
+
+void PrimitiveOneofFieldGenerator::GenerateEqualsCode(
+    io::Printer* printer) const {
+  GenerateOneofFieldEquals(descriptor_, variables_, printer);
+}
+
+void PrimitiveOneofFieldGenerator::GenerateHashCodeCode(
+    io::Printer* printer) const {
+  GenerateOneofFieldHashCode(descriptor_, variables_, printer);
+}
+
+// ===================================================================
+
+RepeatedPrimitiveFieldGenerator::RepeatedPrimitiveFieldGenerator(
+    const FieldDescriptor* descriptor, const Params& params)
   : FieldGenerator(params), descriptor_(descriptor) {
   SetPrimitiveVariables(descriptor, params, &variables_);
 }
