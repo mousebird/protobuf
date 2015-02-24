@@ -317,7 +317,9 @@ inline void GOOGLE_UNALIGNED_STORE64(void *p, uint64 v) {
 #if defined(_MSC_VER)
 #define GOOGLE_THREAD_LOCAL __declspec(thread)
 #else
-#define GOOGLE_THREAD_LOCAL __thread
+//#define GOOGLE_THREAD_LOCAL __thread
+// Note: SJG - hack!
+#define GOOGLE_THREAD_LOCAL
 #endif
 
 // ===================================================================
