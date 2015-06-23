@@ -190,12 +190,12 @@ public final class CodedInputByteBufferNano {
     if (size <= (bufferSize - bufferPos) && size > 0) {
       // Fast path:  We already have the bytes in a contiguous buffer, so
       //   just copy directly from it.
-      final String result = new String(buffer, bufferPos, size, "UTF-8");
+      final String result = new String(buffer, bufferPos, size, InternalNano.UTF_8);
       bufferPos += size;
       return result;
     } else {
       // Slow path:  Build a byte array first then copy it.
-      return new String(readRawBytes(size), "UTF-8");
+      return new String(readRawBytes(size), InternalNano.UTF_8);
     }
   }
 
@@ -236,6 +236,8 @@ public final class CodedInputByteBufferNano {
       System.arraycopy(buffer, bufferPos, result, 0, size);
       bufferPos += size;
       return result;
+    } else if (size == 0) {
+      return WireFormatNano.EMPTY_BYTES;
     } else {
       // Slow path:  Build a byte array first then copy it.
       return readRawBytes(size);
