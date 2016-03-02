@@ -5,7 +5,7 @@
 # dependent projects use the :git notation to refer to the library.
 Pod::Spec.new do |s|
   s.name     = 'Protobuf'
-  s.version  = '3.0.0-alpha-4-pre'
+  s.version  = '3.0.0-alpha-4.1'
   s.summary  = 'Protocol Buffers v.3 runtime library for Objective-C.'
   s.homepage = 'https://github.com/google/protobuf'
   s.license  = 'New BSD'
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
                    'objectivec/google/protobuf/SourceContext.pbobjc.{h,m}',
                    'objectivec/google/protobuf/Struct.pbobjc.{h,m}',
                    'objectivec/google/protobuf/Timestamp.pbobjc.h',
-                   'objectivec/google/protobuf/Type.pbobjc.{h,m}'
+                   'objectivec/google/protobuf/Type.pbobjc.{h,m}',
                    'objectivec/google/protobuf/Wrappers.pbobjc.{h,m}'
   # Timestamp.pbobjc.m and Duration.pbobjc.m are #imported by GPBWellKnownTypes.m. So we can't
   # compile them (duplicate symbols), but we need them available for the importing:
@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
   s.exclude_files = 'objectivec/GPBProtocolBuffers.m'
   s.header_mappings_dir = 'objectivec'
 
-  s.ios.deployment_target = '6.0'
-  s.osx.deployment_target = '10.8'
+  s.ios.deployment_target = '7.1'
+  s.osx.deployment_target = '10.9'
   s.requires_arc = false
 end
