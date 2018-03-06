@@ -72,11 +72,11 @@ const string& NameOfEnum(const EnumDescriptor* descriptor, int value) {
   return (d == NULL ? GetEmptyString() : d->name());
 }
 
-namespace {
-inline bool SupportsArenas(const Descriptor* descriptor) {
-  return descriptor->file()->options().cc_enable_arenas();
-}
-}  // anonymous namespace
+//namespace {
+//inline bool SupportsArenas(const Descriptor* descriptor) {
+//  return descriptor->file()->options().cc_enable_arenas();
+//}
+//}  // anonymous namespace
 
 // ===================================================================
 // Helpers for reporting usage errors (e.g. trying to use GetInt32() on
